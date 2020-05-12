@@ -17,7 +17,8 @@ var TIMED = true;
 var PENALTY = true;
 var MOUSE_MODE = false;
 var SELECT_MODE = true;
-var TUTORIAL = true;
+var menuMode = true;
+var menuCount2 = 0;
 var COUNT_ELECTRONS = true;
 var DEFECT_LOSS = true;
 var SERIES_RESISTOR_MODE = true;
@@ -25,7 +26,6 @@ var PBC = true;
 var NO_SELECT_FLASH = true;
 var HOLD_NAVIGATE = false;
 var cursorColour = "#00ff38";
-var EXTRA_TUTORIAL = true;
 var TIME_LIMIT = 59500;
 var RES_ON = 0.4;
 var RES_OFF = 5;
@@ -145,6 +145,18 @@ function init() {
     bonusSound = document.querySelector('#bring');
     bonusDropSound = document.querySelector('#thud');
 
+	if (menuMode) {
+		console.log('Initialising Menu');
+		window.addEventListener('keypress', startGame);	
+		requestAnimationFrame(menuAnimate);
+	} else {
+		console.log('Going straight to game Menu');
+		gameInit();
+	}
+
+}
+
+function gameInit() {
     for (var l = 0; l < keyRows*keyDblColumns; l++) {
         defected.push(0);
     }
@@ -161,7 +173,6 @@ function init() {
     console.log("Defect List Length: " + defected.length
                 + "Position List Length: " + buttonX.length);
     console.log("Assigned keys to positions of defects");
-    audioPlayer = document.querySelector('#audioPlayer');
     electrodes.forEach(function(electrode) {drawElectrode(electrode);});
 
     drawHexagonGrid(mainShiftX, mainShiftY);
@@ -183,10 +194,10 @@ function init() {
     startTime = new Date().getTime();
 
     requestAnimationFrame(animate);
-    audioPlayer.play();
-    audioPlayer.addEventListener('ended', 
-                                 function () { this.currentTime=0; this.play(); },
-                                 false);
+	//    audioPlayer.play();
+	//    audioPlayer.addEventListener('ended', 
+	//                                 function () { this.currentTime=0; this.play(); },
+	//                                 false);
 }
 
 function createScaledElementSizes() {
@@ -297,8 +308,8 @@ function createScaledElementSizes() {
              dialY: heatBar.posY + 0.1*yScale, 
 			 dialX: heatBar.posX + 0.96*lBar.width, 
 			 dialRad: 0.35*heatBar.height};
-    endGame = {posX: 0.15*xScale,
-			   posY: 0.1*yScale, 
+    endGame = {posX: 0.17*xScale,
+			   posY: 0.14*yScale, 
 			   width: 0.7*xScale, 
 			   height: 0.8*yScale, 
 			   color: 'black', 
@@ -1212,7 +1223,7 @@ function endBox() {
     ctx.strokeStyle = endGame.outline;
     if (!(endCount%10 === 0)){
         ctx.fillText('GAME OVER', 
-                     endGame.posX + 0.25*endGame.width,
+                     endGame.posX + 0.12*endGame.width,
                      endGame.posY + 0.25*endGame.height);
     }
     if (endCount < endTime/4) {
@@ -1278,4 +1289,44 @@ function goBack(evt){
     if (evt.keyCode == 13) {
         window.location.replace("index.html");
     }
+}
+// Menu before play
+
+function menuAnimate(){
+    if (Math.floor(menuCount2/10) % 2 == 0){
+        ctx.strokeStyle = endGame.outline;
+    } else {
+        ctx.strokeStyle = endGame.outlineDark;
+    }
+    ctx.fillStyle = endGame.color;
+    ctx.lineWidth = endLineWidth;
+    ctx.strokeRect(endGame.posX, endGame.posY, endGame.width, endGame.height);
+    ctx.fillRect(endGame.posX, endGame.posY, endGame.width, endGame.height);
+    if (Math.floor(menuCount2++/10) % 2 == 0){
+        ctx.fillStyle = endGame.outline;
+    } else {
+        ctx.fillStyle = endGame.outlineDark;
+    }
+    ctx.font = finalFont2;
+    ctx.fillText("Press Enter to START.", 
+                 endGame.posX + 0.12*endGame.width, 
+                 endGame.posY + 0.7*endGame.height);
+    ctx.fillStyle = endGame.outline;
+    ctx.font = finalFont1;
+    ctx.fillText("DEFECT DROP", 
+                 endGame.posX + 0.12*endGame.width,
+                 endGame.posY + 0.24*endGame.height);
+	if (!menuMode) {
+		window.removeEventListener('keypress', startGame);	
+		ctx.clearRect(0.0, 0.0, canvas.width, canvas.height);
+		gameInit();
+	} else {
+		requestAnimationFrame(menuAnimate);
+	}
+}
+
+function startGame(evt) {
+    if (evt.keyCode == 13) {
+		menuMode = false;
+	}
 }
