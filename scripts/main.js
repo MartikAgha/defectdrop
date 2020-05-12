@@ -96,12 +96,12 @@ var lBar;
 var heatBar;
 var timer;
 var endGame;
-var finalFont1 = "140px mrrobotregular";
-var finalFont2 = "110px mrrobotregular";
-var flowBoxFont = "70px mrrobotregular";
-var electronBarFont = "70px mrrobotregular";
-var timerFont = "70px mrrobotregular";
-var bonusAlertFont = "70px mrrobotregular";
+var finalFont1;
+var finalFont2;
+var flowBoxFont;
+var electronBarFont;
+var timerFont;
+var bonusAlertFont;
 var flowBoxLineWidth = 4;
 var electrodeLineWidth = 5;
 var wireLineWidth = 3;
@@ -202,13 +202,13 @@ function createScaledElementSizes() {
 	DEFECT_RADIUS = 0.0303*yScale;
 	ELECTRON_RADIUS = 0.016*yScale;
 	ELECTRON_SPEED = 0.01*yScale;
-	finalFont1 = Math.floor(0.1286*yScale) + "px mrrobotregular";
-	finalFont2 = Math.floor(0.1011*yScale) + "px mrrobotregular";
+	finalFont1 = Math.floor(0.15*yScale) + "px mrrobotregular";
+	finalFont2 = Math.floor(0.08*yScale) + "px mrrobotregular";
 	flowBoxFont = Math.floor(0.0843*yScale) + "px mrrobotregular";
 	flowBoxLineWidth = Math.floor(0.01*yScale) + "px";
 	electronBarFont = Math.floor(0.055*yScale) + "px mrrobotregular";
 	timerFont = Math.floor(0.072*yScale) + "px mrrobotregular";
-	bonusAlertFont = Math.floor(0.055*yScale) +"px mrrobotregular";
+	bonusAlertFont = Math.floor(0.065*yScale) +"px mrrobotregular";
 	// BONUS atom constants 
 	BONUS_BAR_WIDTH = 0.01838*yScale;
 	BONUS_BUFFER_X=0.1406*xScale, BONUS_BUFFER_Y=0.0735*yScale;
@@ -297,10 +297,10 @@ function createScaledElementSizes() {
              dialY: heatBar.posY + 0.1*yScale, 
 			 dialX: heatBar.posX + 0.96*lBar.width, 
 			 dialRad: 0.35*heatBar.height};
-    endGame = {posX: 0.187*xScale,
-			   posY: 0.165*yScale, 
-			   width: 0.562*xScale, 
-			   height: 0.735*yScale, 
+    endGame = {posX: 0.15*xScale,
+			   posY: 0.1*yScale, 
+			   width: 0.7*xScale, 
+			   height: 0.8*yScale, 
 			   color: 'black', 
 			   outline:'#03ff14',
 			   outlineDark:'#006400'};
@@ -653,7 +653,7 @@ function animate(){
                     ctx.fillStyle = 'white';
                     ctx.strokeStyle = 'black';
 					ctx.font = bonusAlertFont;
-                    var notification = "YOU WON A STRONGER BONUS ATOM!";
+                    var notification = "ENJOY A STRONGER BONUS ATOM!";
                     if (soundNotPlayed) {
                         bonusSound.play();
                         soundNotPlayed=false;
