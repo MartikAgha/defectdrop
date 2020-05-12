@@ -1287,7 +1287,7 @@ function scoreSequence() {
 
 function goBack(evt){
     if (evt.keyCode == 13) {
-        window.location.replace("index.html");
+        window.location.reload();//place("index.html");
     }
 }
 // Menu before play
